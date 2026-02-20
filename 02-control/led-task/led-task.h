@@ -1,17 +1,27 @@
-#pragma once
+// led-task.h
+#ifndef LED_TASK_H
+#define LED_TASK_H
 
 #include <stdint.h>
-#include "../protocol-task/protocol-task.h"
 
-typedef enum
-{
-	LED_STATE_OFF = 0,
-	LED_STATE_ON = 1,
-	LED_STATE_BLINK = 2,
+typedef enum {
+    LED_STATE_OFF,
+    LED_STATE_ON,
+    LED_STATE_BLINK
 } led_state_t;
 
-void led_task_init(api_t* device_api);
+// Инициализация LED задачи
+void led_task_init(void* api);
 
-void led_task_handle(char* command_string);
-
+// Управление состоянием
 void led_task_state_set(led_state_t state);
+led_state_t led_task_state_get(void);
+
+// Управление периодом мигания
+void led_task_set_blink_period(uint32_t period_ms);
+uint32_t led_task_get_blink_period(void);
+
+// Обработчик задачи (должен вызываться в цикле)
+void led_task_handle(void* param);
+
+#endif // LED_TASK_H
