@@ -1,11 +1,20 @@
 #pragma once
-//#ifdef ADC_TASK_H
-//#define ADC_TASK_H
+
 #include <stdint.h>
-#include "../adc-task/adc-task.h"
+#include <stdbool.h>
+
+typedef enum
+{
+    ADC_TASK_STATE_IDLE = 0,
+    ADC_TASK_STATE_RUN = 1,
+} adc_task_state_t;
+
+void adc_task_init(void);
+
+void adc_task_set_state(adc_task_state_t state);  
+void adc_task_handle(void);  
 
 float adc_task_read_voltage(void);
-float adc_task_read_temprature(void);
-//void led_task_handle(char* command_string);
 
-//void led_task_state_set(led_state_t state);
+
+float adc_task_read_temperature(void);

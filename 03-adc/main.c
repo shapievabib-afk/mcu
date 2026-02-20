@@ -34,6 +34,18 @@ void led_on_callback(const char* args)
     printf("LED turned ON\n");
 }
 
+void tm_start_callback(const char* args)
+{
+    adc_task_set_state(ADC_TASK_STATE_RUN);
+    // printf уже внутри adc_task_set_state
+}
+
+void tm_stop_callback(const char* args)
+{
+    adc_task_set_state(ADC_TASK_STATE_IDLE);
+    // printf уже внутри adc_task_set_state
+}
+
 // Callback для выключения LED
 void led_off_callback(const char* args)
 {
@@ -69,6 +81,8 @@ api_t device_api[] =
     {"blink", led_blink_callback, "make LED blink [period_ms]"},
     {"get_adc", get_adc_callback, "read voltage_V from GPIO 26"},
     {"get_temp", get_temprature_callback, "read temp_C from GPIO 26"},
+    {"tm_start", tm_start_callback, "start telemetry (voltage and temperature every 100ms)"},
+    {"tm_stop", tm_stop_callback, "stop telemetry"},
     {NULL, NULL, NULL},
 };
 
@@ -91,6 +105,8 @@ int main()
     printf("  blink [period]  - make LED blink (period in ms, default 500ms)\n");
     printf(" get_adc - read voltage_V from GPIO 26\n");
     printf(" get_temp - read temp_C from GPIO 26\n");
+    printf("  tm_start        - start telemetry (voltage and temperature every 100ms)\n");
+    printf("  tm_stop         - stop telemetry\n");
     
     while (1)
     {
@@ -105,7 +121,7 @@ int main()
         
     
         led_task_handle(NULL);
-        
+        adc_task_handle();
         sleep_ms(10);
     }
     
