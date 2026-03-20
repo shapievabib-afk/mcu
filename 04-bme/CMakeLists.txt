@@ -16,10 +16,13 @@ add_executable(04_bme
 )
 
 add_subdirectory("../libs/protocol" "${PROJECT_BINARY_DIR}/protocol")
+add_subdirectory("../libs/bme280-driver" "${PROJECT_BINARY_DIR}/bme280-driver")
 
 target_link_libraries(04_bme
     pico_stdlib
     protocol
+    bme280_driver
+    hardware_i2c
 )
 
 pico_set_linker_script(04_bme ${CMAKE_CURRENT_SOURCE_DIR}/memmap_rp2040.ld)
